@@ -49,12 +49,6 @@
             </dependency>
 
             <dependency>
-                <groupId>net.bramp.ffmpeg</groupId>
-                <artifactId>ffmpeg</artifactId>
-                <version>0.6.2</version>
-            </dependency>
-
-            <dependency>
                 <groupId>org.zeroturnaround</groupId>
                 <artifactId>zt-exec</artifactId>
                 <version>${zt-exec.version}</version>
