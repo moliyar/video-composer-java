@@ -1,28 +1,25 @@
 package com.sombrainc.ffmpegtool.media.codec.video;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class VideoCodec<T extends VideoCodec> {
 
-    public static final VideoCodec CURRENT_CODEC = new VideoCodec("copy");
+    public static final VideoCodec COPY_CODEC = new VideoCodec("-codec:v", "copy");
+    public static final VideoCodec WITH_OUT_CODEC = new VideoCodec("-vn");
 
-    private String codecName;
+    private String[] args;
 
     public VideoCodec(VideoCodecTemplate<T> codecTemplate) {
-        this.codecName = codecTemplate.codecName;
+       this("-codec:v", codecTemplate.codecName);
     }
 
-    private VideoCodec(String codecName) {
-        this.codecName = codecName;
+    public VideoCodec(String... args) {
+        this.args = args;
     }
 
     public List<String> getArgs() {
-        List<String> result = new ArrayList<>();
-        result.add("-codec:v");
-        result.add(codecName);
-
-        return result;
+        return Arrays.asList(args);
     }
 
     public static class VideoCodecTemplate<T extends VideoCodec> {

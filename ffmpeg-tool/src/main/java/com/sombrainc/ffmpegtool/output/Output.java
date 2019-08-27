@@ -20,8 +20,8 @@ public class Output {
 
     private Clipping clipping;
 
-    private VideoCodec videoCodec = VideoCodec.CURRENT_CODEC;
-    private AudioCodec audioCodec = AudioCodec.CURRENT_CODEC;
+    private VideoCodec videoCodec;
+    private AudioCodec audioCodec;
 
     private Output(Input input, String outputPath) {
         this.input = input;
@@ -34,7 +34,7 @@ public class Output {
     }
 
     public Output disableAudio() {
-        return audioCodec(null);
+        return audioCodec(AudioCodec.WITH_OUT_CODEC);
     }
 
     public Output videoCodec(VideoCodec videoCodec) {
@@ -43,7 +43,7 @@ public class Output {
     }
 
     public Output disableVideo() {
-        return videoCodec(null);
+        return videoCodec(VideoCodec.WITH_OUT_CODEC);
     }
 
     public Output clipping(Clipping clipping) {
@@ -65,14 +65,10 @@ public class Output {
 
         if (videoCodec != null) {
             result.addAll(videoCodec.getArgs());
-        } else {
-            result.add("-vn");
         }
 
         if (audioCodec != null) {
             result.addAll(audioCodec.getArgs());
-        } else {
-            result.add("-an");
         }
 
         result.add(outputPath);
