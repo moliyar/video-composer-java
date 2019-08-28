@@ -1,5 +1,7 @@
 package com.sombrainc.ffmpegtool.media.codec.audio;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,18 +12,32 @@ public class AudioCodec<T extends AudioCodec> {
     public static final AudioCodec COPY_CODEC = new AudioCodec("-codec:v", "copy");
     public static final AudioCodec WITH_OUT_CODEC = new AudioCodec("-an");
 
-    private String[] args;
+    protected String bitRate;
+
+    private List<String> args;
 
     public AudioCodec(AudioCodecTemplate<T> codecTemplate) {
         this("-codec:a", codecTemplate.codecName);
     }
 
     public AudioCodec(String... args) {
-        this.args = args;
+        this.args = Arrays.stream(args).collect(Collectors.toList());
+    }
+
+    public T bitRate(String bitRate) {
+        this.bitRate = bitRate;
+        return (T) this;
     }
 
     public List<String> getArgs() {
-        return Arrays.stream(args).collect(Collectors.toList());
+        List<String> args = new ArrayList<>(this.args);
+
+        if (StringUtils.isNoneBlank(bitRate)) {
+            args.add("-ab");
+            args.add(bitRate);
+        }
+
+        return args;
     }
 
     public static class AudioCodecTemplate<T extends AudioCodec> {
