@@ -5,7 +5,10 @@ It's java api wrapper for work with FFmpeg tool.
 After doing some research, we found similar library [ffmpeg-cli-wrapper](https://github.com/bramp/ffmpeg-cli-wrapper) that can be used for the demo. But by using this library we were not able to cover all requirements that can be expected from video editor.
 Also the library license doesn't allow source modification without contribution process. So this is not best practice to use such libraries for commercial projects.
 
-Following samples demonstrates our vision how for work with commanline tool.
+Following samples demonstrates our vision how to work with command line tool. 
+
+For example we have implemented several codecs with base options than can be expanded in an easy way. Please see [VideoCodecs](https://github.com/moliyar/video-composer-java/blob/develop/ffmpeg-tool/src/main/java/com/sombrainc/ffmpegtool/media/codec/VideoCodecs.java) and [AudioCodecs](https://github.com/moliyar/video-composer-java/blob/develop/ffmpeg-tool/src/main/java/com/sombrainc/ffmpegtool/media/codec/AudioCodecs.java).
+Also please see [FilterComplex](https://github.com/moliyar/video-composer-java/blob/develop/ffmpeg-tool/src/main/java/com/sombrainc/ffmpegtool/media/filter/FilterComplex.java) in order to implement more filters.
 
 Please note that **ffmpeg** should be locally installed on Linux (or other OS) so this usage doesn't seem to violate GPL licensing, because it doesn't need ffmpeg to be packaged inside jar.
 
@@ -81,7 +84,8 @@ Code
 ```
 
 #### Process multiple files in parallel
-Code
+Based on [CountDownLatch](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/CountDownLatch.html) class has been implemented set of tools for building and executing parallel threads. When all threads are finished you will be able to get result for each thread. 
+If some thread failed you can get the appropriate exception from the result 
 ```java
 	ParallelProcessPoolBuilder<ProcessRunner, FFmpegResult> builder = ParallelProcessPool.withResulting(ProcessRunner.class, FFmpegResult.class);
 
