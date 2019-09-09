@@ -83,6 +83,32 @@ Code
 	FFmpegResult ffmpegResult = ffmpeg.toOutput(output).execute();
 ```
 
+#### Add watermark, clipping, video codec and audio codec in one call
+Multiple actions could be added via customizing ```Output``` class instance.
+
+```java
+     FFmpeg ffmpeg = FFmpeg.fromPath(ffmpegPath);
+
+        FileInput videoInput = FileInput.fromPath(Resources.PATH_TO_MP4_VIDEO, ffmpeg);
+        FileInput watermarkInput = FileInput.fromPath(Resources.PATH_TO_FFMPEG_LOGO, ffmpeg);
+
+        FilterChainInput overlayVideo = ffmpeg.filterComplex().applyOverlay(videoInput, watermarkInput, OverlayFilter.ofTopRight(10, 10));
+
+        MSMPEG4v2Codec videoCodec = VideoCodecs.MPEG4_CODEC.build()
+                .size(320, 240);
+
+        MP3Codec mp3Codec = AudioCodecs.MP3_CODEC.build()
+                .samplingRate("44100")
+                .bitRate("192k");
+
+        Output output = Output.of(overlayVideo, buildTmpFilePath("videoWithWatermark.mp4"))
+                .audioCodec(mp3Codec)
+                .videoCodec(videoCodec)
+		.clipping(Clipping.betweenSeconds(1, 3));
+
+        FFmpegResult ffmpegResult = ffmpeg.toOutput(output).execute();
+```
+
 #### Process multiple files in parallel
 Based on [CountDownLatch](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/CountDownLatch.html) class has been implemented set of tools for building and executing parallel threads. When all threads are finished you will be able to get result for each thread. 
 If some thread failed you can get the appropriate exception from the result 
