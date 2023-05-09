@@ -28,7 +28,7 @@
 
         <ffmpeg.version>0.6.2</ffmpeg.version>
         <mockito.version>2.23.0</mockito.version>
-        <testng.version>6.14.3</testng.version>
+        <testng.version>7.5.1</testng.version>
 
         <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
     </properties>
